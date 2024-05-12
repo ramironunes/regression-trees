@@ -1,0 +1,4 @@
+curl
+git
+texlive-full
+vim
