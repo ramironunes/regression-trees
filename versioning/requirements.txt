@@ -1,3 +1,5 @@
 graphviz
 matplotlib
+openpyxl
+pandas
 scikit-learn
