@@ -2,7 +2,7 @@
 # @Author: Ramiro Luiz Nunes
 # @Date:   2024-05-12 11:11:05
 # @Last Modified by:   Ramiro Luiz Nunes
-# @Last Modified time: 2024-05-12 13:27:42
+# @Last Modified time: 2024-05-12 13:31:51
 
 
 import os
@@ -47,10 +47,10 @@ def dataset_to_excel(dataset_info: Tuple[str, callable]) -> None:
             df['Target Name'] = df['Target'].map(target_name_map)
 
         # Current datetime for sheet naming
-        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+        current_time: str = datetime.now().strftime("%Y%m%d-%H%M%S")
 
         # Define the file path for the Excel file
-        file_path = f"dataset/{dataset_name}.xlsx"
+        file_path: str = f"dataset/{dataset_name}.xlsx"
 
         # Save the dataframe to an Excel file in the 'dataset' folder with a custom sheet name
         df.to_excel(file_path, index=False, sheet_name=current_time)
