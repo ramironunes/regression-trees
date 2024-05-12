@@ -1,0 +1,349 @@
+% @Author: Ramiro Luiz Nunes
+% @Date:   2024-05-12 08:53:01
+% @Last Modified by:   Ramiro Luiz Nunes
+% @Last Modified time: 2024-05-12 08:53:08
+
+
+% \documentclass{beamer} %voce pode usar este modelo tambem
+\documentclass[handout,aspectratio = 169]{beamer}
+\usefonttheme{serif}
+\usepackage{graphicx,url}
+\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{outlines}
+\usepackage{comment}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subfig}
+\usepackage{graphicx,url}
+\usepackage{subfigure}
+
+
+% \usepackage{fontspec}
+% \setmainfont{Times}
+%Image package
+
+\usepackage{animate}
+% \usepackage{hyphenat}
+% \usepackage{multicol}
+% \usepackage{pxfonts}
+
+\batchmode
+% \usepackage{pgfpages}
+% \pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=5mm]
+\usepackage{amsmath,amssymb,enumerate,epsfig,bbm,calc,color,ifthen,capt-of}
+\usetheme{Berlin}
+\usecolortheme{orchid}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{footline}[frame number]
+
+%-------------------------Titulo/Autores/Orientador------------------------------------------------
+\title{Árvores de Regressão: Processo de Treinamento}
+\date{14 de maio de 2024}
+\author[]{Introdução ao Aprendizado de Máquina \newline \newline Jean Marcelo Mira Junior \newline Ramiro Luiz Nunes}
+
+%-------------------------Logo na parte de baixo do slide------------------------------------------
+\pgfdeclareimage[height=1.0cm]{brasao}{brasao.pdf}
+\logo{\pgfuseimage{brasao}\hspace*{0.5cm}}
+
+\begin{document}
+% -----------------------------------------------------------------------------
+
+%---Gerador de Sumário---------------------------------------------------------
+\frame{\titlepage}
+\section[]{}
+\begin{frame}{Sumário}
+  \tableofcontents
+\end{frame}
+%---Fim do Sumário------------------------------------------------------------
+
+
+% -----------------------------------------------------------------------------
+\section{Introdução}
+
+\begin{frame}{Desenvolvimento de um projeto de software embarcado}
+    Para Kleppe et al. (2005), durante o desenvolvimento de software há:
+    \begin{itemize}
+        \item Levantamento de requisitos;
+        \item Análise e descrição funcional;
+        \item Elaboração do projeto;
+        \item Codificação;
+        \item Teste do código desenvolvido.
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\section{Objetivos}
+\begin{frame}{Objetivos}
+    \begin{outline}
+        \1 Objetivo Geral:
+        Elaborar um procedimento para geração de código utilizando modelos UML voltado para diagramas comportamentais, especificamente o diagrama de atividades.
+    \end{outline}
+
+    \begin{outline}
+        \1 Objetivos Específicos:
+        \2 Estudar a literatura sobre transformação de modelo para texto;
+        \2 Selecionar uma abordagem para geração de código através de diagramas comportamentais UML;
+        \2 Projetar e implementar a geração de código;
+        \2 Testar e analisar os resultados da implementação.
+    \end{outline}
+\end{frame}
+
+%------------------------------------------------------------------------------
+
+\section{Fundamentação teórica}
+\begin{frame}{Fundamentação teórica}
+    \begin{itemize}
+        \item Sistemas Embarcados;
+        \item Desenvolvimento dirigido por modelos;
+        \item Linguagem de modelagem unificada (UML);
+        \item Geração de código.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{UML e o diagrama comportamental de atividade - Nós}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.5\linewidth]{Figs/nosdecontrole.png}
+            \caption{Nós de controle (Autor, 2022).}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{UML e o diagrama comportamental de atividade - Ações}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.7\linewidth]{Figs/atividadenos(2).png}
+            \caption{Nós de atividade e ações (Autor, 2022).}
+    \end{figure}
+\end{frame}
+
+%------------------------------------------------------------------------------
+\section{Metodologia}
+\begin{frame}{Conceito de trabalho}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.7\linewidth]{Figs/metodo.png}
+            \caption{Abordagem Aplicada para Geração de Código (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Exemplo diagrama de classe}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.55\linewidth]{Figs/ProxyExample.png}
+            \caption{Classe padrão proxy de hardware (Samek, 2008).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Modelagem no eclipse papyrus modeling}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.75\linewidth]{Figs/classDiagramProxy.png}
+            \caption{Diagrama de classe MotorProxy (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Modelagem do método accessMotorDirection - Parte I lógica}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.45\linewidth]{Figs/accessMotorDirection.png}
+            \caption{Diagrama de atividade accessMotorDirection (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Lógica para geração de código}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.8\linewidth]{Figs/alg.png}
+            \caption{Pseudocódigo para nó de decisão (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Modelagem do método accessMotorDirection - Parte II lógica}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.45\linewidth]{Figs/accessMotorDirection.png}
+            \caption{Diagrama de atividade accessMotorDirection (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+
+%------------------------------------------------------------------------------
+
+\section{Resultados}
+\begin{frame}{DecisionNode e a relação com OpaqueBehavior}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[\centering Diagrama de atividade]{
+\includegraphics[width=.4\textwidth]{Figs/accessMotorDirection.png}
+} % end subfigure
+\quad % dá um espaço entre as duas figuras.
+\subfigure[\centering Código gerado]{
+\includegraphics[width=.5\textwidth]{Figs/codCodaccessMotorDirection.png}
+} % end subfigure
+\caption{Exemplo 1 de código gerado accessMotorDirection (Autor, 2022).}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{CreateObjectAction e CallOperationAction}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[\centering Diagrama de atividade]{
+\includegraphics[width=.25\textwidth]{Figs/writeMotorSpeed.png}
+} % end subfigure
+\quad % dá um espaço entre as duas figuras.
+\subfigure[\centering Código gerado]{
+\includegraphics[width=.4\textwidth]{Figs/codwriteMotorSpeed.png}
+} % end subfigure
+\caption{Exemplo 2 de código gerado writeMotorSpeed (Autor, 2022).}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{ReadStructuralFeatureAction e AddStructuralFeatureValueAction}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[\centering Diagrama de atividade]{
+\includegraphics[width=.45\textwidth]{Figs/clearErrorStatus.png}
+} % end subfigure
+\quad % dá um espaço entre as duas figuras.
+\subfigure[\centering Código gerado]{
+\includegraphics[width=.45\textwidth]{Figs/codclearErrorStatus.png}
+} % end subfigure
+\caption{Exemplo 3 de código gerado clearErrorStatus (Autor, 2022).}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Exemplo diagrama de classe - Limitação}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.52\linewidth]{Figs/buttonClass.png}
+            \caption{Classe de padrão Debouncing (Samek, 2008).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Modelagem no eclipse papyrus modeling - Limitação}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.8\linewidth]{Figs/classDiagramButton.png}
+            \caption{Diagrama de classe Timer (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Modelagem diagrama de atividade delay - Limitação}
+    \begin{figure}
+            \centering
+             \includegraphics[width=0.45\linewidth]{Figs/delay.png}
+            \caption{Diagrama de atividade delay da classe Timer (Autor, 2022).}
+        \end{figure}
+\end{frame}
+
+\begin{frame}{Comparação do código da literatura com código gerado}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[\centering Código da literatura (Samek, 2008).]{
+\includegraphics[width=.45\textwidth]{Figs/timingCode.png}
+} % end subfigure
+\quad % dá um espaço entre as duas figuras.
+\subfigure[\centering Código gerado (Autor, 2022).]{
+\includegraphics[width=.45\textwidth]{Figs/meuTimer.png}
+} % end subfigure
+\caption{Exemplo 4 de código gerado método delay.}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+
+\section{Conclusões}
+
+\begin{frame}{Conclusões}
+    \begin{outline}
+        \1 Após estudar a literatura de transformação de modelos para texto;
+        \1 Selecionar a abordagem para geração de código embarcado através de diagrama comportamental de atividade UML; 
+        \1 Realizar a implementação do gerador e obter fragmentos de código.
+    \end{outline}
+\end{frame}
+
+\begin{frame}{Conclusões}
+    \begin{outline}
+        \1 A ferramenta consegue identificar e realizar a geração de código para os nós:
+        \2 InitialNode;
+        \2 DecisionNode;
+        \2 MergeNode;
+        \2 ActivityFinalNode.
+
+        \1 Além das ações:
+        \2 ReadStructuralFeatureAction;
+        \2 AddStructuralFeatureValueAction;
+        \2 ActivityParameterNode;
+        \2 ClearStructuralFeatureAction;
+        \2 CreateObjectAction;
+        \2 DestroyObjectAction;
+        \2 CallOperationAction.
+    \end{outline}
+\end{frame}
+
+\begin{frame}{Conclusões}
+    \begin{outline}
+        \1 Conseguindo gerar fragmentos de código em C++ para:
+        \2 Criar objetos;
+        \2 Destruir objetos;
+        \2 Atribuir valor aos objetos;
+        \2 Retornar o valor dos objetos;
+        \2 Estrutura If/Else;
+        \2 Realizar a chamada de funções para os objetos.
+    \end{outline}
+\end{frame}
+
+\begin{frame}{Conclusões}
+    \begin{outline}
+        \1 Tendo como limitações:
+        \2 Tarefas paralelas (ForkNode e JoinNode);
+        \2 Laço de repetição While e For (LoopNode ou DecisionNode);
+        \2 OpaqueBehavior na condição do If;
+        \2 Indentação.
+    \end{outline}
+\end{frame}
+
+\begin{frame}{Conclusões}
+
+    \begin{outline}
+        \1 Trabalhos futuros:
+        \2 Aumentar a quantidade de nós e ações comportamentais suportados (laços de repetição e tarefas em paralelo);
+        \2 Controle do objeto enviado no fluxo de objetos;
+        \2 Melhorar indentação.
+    \end{outline}
+\end{frame}
+
+
+%------------------------------------------------------------------------------
+
+\section{Referências}
+\begin{frame}[t]{Referências}
+    \begin{itemize}
+        \item SAMEK, M. Practical UML Statecharts in C/C++: Event-Driven Programming for Embedded Systems. CRC Press, 2008. ISBN 9781482249262.
+        \item KLEPPE, A.; WARMER, J.; BAST, W. MDA explained, the model driven architecture: practice and promise. 5. ed. Massachusetts: Pearson, 2005.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Fechamento}
+    \centering
+    Geração de Código Usando Diagramas de Atividade para Sistemas Embarcados
+   \par\noindent\rule{\textwidth}{0.5pt}
+    Jean Marcelo Mira Junior\\
+    Orientador: Prof. Dr. Gian Ricardo Berkenbrock
+
+\end{frame}
+
+\end{document}
+
+%-----------------------------------------------Este comentario nunca aparecera
