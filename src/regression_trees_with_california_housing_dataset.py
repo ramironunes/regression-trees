@@ -2,7 +2,7 @@
 # @Author: Ramiro Luiz Nunes
 # @Date:   2024-05-12 17:24:30
 # @Last Modified by:   Ramiro Luiz Nunes
-# @Last Modified time: 2024-05-12 23:32:25
+# @Last Modified time: 2024-05-13 20:25:12
 
 
 import os
@@ -138,7 +138,6 @@ graph = Source(dot_data)
 graph.render(
     f"{base_path}/img/california_housing_best_tree_depth_{best_depth}",
     format='png',
-    view=True,
 )
 
 # Optionally, plot MSE and R² Score from the DataFrame
