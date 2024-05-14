@@ -2,7 +2,7 @@
 # @Author: Ramiro Luiz Nunes
 # @Date:   2024-05-13 20:18:11
 # @Last Modified by:   Ramiro Luiz Nunes
-# @Last Modified time: 2024-05-13 20:36:09
+# @Last Modified time: 2024-05-13 21:02:53
 
 
 import os
@@ -23,7 +23,7 @@ if not os.path.exists(dataset_path):
     os.makedirs(dataset_path)
 
 # Load the Boston Housing dataset from an Excel file
-file_path: str = f'{dataset_path}BostonHousing.xlsx'
+file_path: str = f'{dataset_path}Boston Housing.xlsx'
 df = pd.read_excel(file_path)
 
 # Automatically identify the target column
@@ -53,11 +53,12 @@ if not os.path.exists(img_path):
     os.makedirs(img_path)
 
 # Use Graphviz to visualize the tree
-graph = Source(dot_data, format='png')
+graph = Source(dot_data)
 # Save the tree image to a file
 graph.render(
-    f"{img_path}/boston_housing_tree",
+    f"{img_path}/building_boston_housing_tree",
     format='png',
+    view=False,
 )
 # Show the tree
 graph.view()
