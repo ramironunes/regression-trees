@@ -2,7 +2,7 @@
 # @Author: Ramiro Luiz Nunes
 # @Date:   2024-05-12 17:24:30
 # @Last Modified by:   Jean Mira
-# @Last Modified time: 2024-05-13 22:17:37
+# @Last Modified time: 2024-05-13 23:05:41
 
 
 import os
@@ -108,13 +108,15 @@ for depth in range(1, 6):  # Adjust the range if you want to evaluate more trees
         ignore_index=True,
     )
 
-    dot_data: str = export_graphviz(
+    dot_data = export_graphviz(
         regressor,
         out_file=None,
+        feature_names=X_train.columns,
         filled=True,
         rounded=True,
-        special_characters=True,
+        special_characters=True
     )
+
     graph = Source(dot_data)
     graph.render(
         f"{base_path}/img/boston_housing_tree_depth_{depth}",
@@ -144,12 +146,13 @@ print(tree_metrics)
 # Visualizing the decision tree for the best model
 best_tree = DecisionTreeRegressor(max_depth=best_depth)
 best_tree.fit(X_train, y_train)
-dot_data: str = export_graphviz(
-    best_tree,
+dot_data = export_graphviz(
+    regressor,
     out_file=None,
+    feature_names=X_train.columns,
     filled=True,
     rounded=True,
-    special_characters=True,
+    special_characters=True
 )
 graph = Source(dot_data)
 graph.render(
