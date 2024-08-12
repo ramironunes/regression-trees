@@ -1,0 +1,17 @@
+# Ignore the virtual environment directory
+venv/
+
+# Ignore editor configuration files
+.vscode/
+.idea/
+
+# Ignore temporary files that may be generated
+*.log
+*.tmp
+*.temp
+
+# Ignore build directories and artifacts
+build/
+dist/
+*.pyc
+__pycache__/

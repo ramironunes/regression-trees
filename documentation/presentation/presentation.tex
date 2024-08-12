@@ -1,10 +1,10 @@
 % @Author: Ramiro Luiz Nunes
-% @Date:   2024-05-12 08:53:01
+% @Date:   2024-05-12 16:28:49
 % @Last Modified by:   Ramiro Luiz Nunes
-% @Last Modified time: 2024-05-12 08:53:08
+% @Last Modified time: 2024-05-13 20:51:02
 
 
-% \documentclass{beamer} %voce pode usar este modelo tambem
+%\documentclass{beamer} %voce pode usar este modelo tambem
 \documentclass[handout,aspectratio = 169]{beamer}
 \usefonttheme{serif}
 \usepackage{graphicx,url}
@@ -41,8 +41,13 @@
 
 %-------------------------Titulo/Autores/Orientador------------------------------------------------
 \title{Árvores de Regressão: Processo de Treinamento}
+
 \date{14 de maio de 2024}
-\author[]{Introdução ao Aprendizado de Máquina \newline \newline Jean Marcelo Mira Junior \newline Ramiro Luiz Nunes}
+
+\author[]{Introdução ao Aprendizado de Máquina
+    \newline Jean Marcelo Mira Junior
+    \newline Ramiro Luiz Nunes
+}
 
 %-------------------------Logo na parte de baixo do slide------------------------------------------
 \pgfdeclareimage[height=1.0cm]{brasao}{brasao.pdf}
@@ -59,291 +64,296 @@
 \end{frame}
 %---Fim do Sumário------------------------------------------------------------
 
+%------------------------------------------------------------------------------
 
-% -----------------------------------------------------------------------------
 \section{Introdução}
 
-\begin{frame}{Desenvolvimento de um projeto de software embarcado}
-    Para Kleppe et al. (2005), durante o desenvolvimento de software há:
+\begin{frame}{Base de Científica}
+    \centering % Este comando centraliza todo o conteúdo dentro do frame
+    \begin{minipage}[c]{0.3\textwidth}
+        \includegraphics[width=\linewidth]{Figs/bib.jpg} % Ajuste o caminho conforme necessário
+    \end{minipage}
+    \begin{minipage}[c]{0.6\textwidth} % Aumentada a largura para dar mais espaço para o texto
+        \centering % Centraliza o conteúdo no slide
+        \vspace*{\fill} % Adiciona espaço verticalmente para empurrar o conteúdo para baixo
+        \Large{\textbf{Classification and Regression Trees}} % Título do livro em negrito e tamanho grande
+        \vspace{1em} % Espaço vertical entre o título e os autores
+        
+        \small{Leo Breiman, Jerome H. Friedman, Richard A. Olshen, Charles J. Stone} % Autores em tamanho pequeno
+        \vspace*{\fill} % Adiciona espaço no final para centralizar verticalmente
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Diferença entre Árvores de Decisão e Regressão}
+\begin{itemize}
+    \item \textbf{Árvores de Decisão:}
     \begin{itemize}
-        \item Levantamento de requisitos;
-        \item Análise e descrição funcional;
-        \item Elaboração do projeto;
-        \item Codificação;
-        \item Teste do código desenvolvido.
-    \end{itemize}
-\end{frame}
-
-%------------------------------------------------------------------------------
-\section{Objetivos}
-\begin{frame}{Objetivos}
-    \begin{outline}
-        \1 Objetivo Geral:
-        Elaborar um procedimento para geração de código utilizando modelos UML voltado para diagramas comportamentais, especificamente o diagrama de atividades.
-    \end{outline}
-
-    \begin{outline}
-        \1 Objetivos Específicos:
-        \2 Estudar a literatura sobre transformação de modelo para texto;
-        \2 Selecionar uma abordagem para geração de código através de diagramas comportamentais UML;
-        \2 Projetar e implementar a geração de código;
-        \2 Testar e analisar os resultados da implementação.
-    \end{outline}
-\end{frame}
-
-%------------------------------------------------------------------------------
-
-\section{Fundamentação teórica}
-\begin{frame}{Fundamentação teórica}
+        \item \textit{Objetivo:} Prever categorias (ex: aprovado/reprovado).
+        \item \textit{Funcionamento:} Modelo em forma de árvore para decisões recursivas.
+        \item \textit{Vantagens:} Fácil interpretação, robustez a outliers.
+        \item \textit{Desvantagens:} Risco de sobreajuste, menos eficaz em grandes dados.
+    \end{itemize} 
+    \vspace{1em} % Espaço vertical de uma linha entre os itens principais
+    \item \textbf{Árvores de Regressão:}
     \begin{itemize}
-        \item Sistemas Embarcados;
-        \item Desenvolvimento dirigido por modelos;
-        \item Linguagem de modelagem unificada (UML);
-        \item Geração de código.
+        \item \textit{Objetivo:} Prever valores contínuos (ex: preço de casa).
+        \item \textit{Funcionamento:} Usa funções matemáticas para ajustar dados.
+        \item \textit{Vantagens:} Alta precisão, útil em relações complexas.
+        \item \textit{Desvantagens:} Modelo complexo, sensível a outliers.
     \end{itemize}
-\end{frame}
-
-\begin{frame}{UML e o diagrama comportamental de atividade - Nós}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.5\linewidth]{Figs/nosdecontrole.png}
-            \caption{Nós de controle (Autor, 2022).}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{UML e o diagrama comportamental de atividade - Ações}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.7\linewidth]{Figs/atividadenos(2).png}
-            \caption{Nós de atividade e ações (Autor, 2022).}
-    \end{figure}
-\end{frame}
-
-%------------------------------------------------------------------------------
-\section{Metodologia}
-\begin{frame}{Conceito de trabalho}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.7\linewidth]{Figs/metodo.png}
-            \caption{Abordagem Aplicada para Geração de Código (Autor, 2022).}
-        \end{figure}
-\end{frame}
-
-\begin{frame}{Exemplo diagrama de classe}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.55\linewidth]{Figs/ProxyExample.png}
-            \caption{Classe padrão proxy de hardware (Samek, 2008).}
-        \end{figure}
-\end{frame}
-
-\begin{frame}{Modelagem no eclipse papyrus modeling}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.75\linewidth]{Figs/classDiagramProxy.png}
-            \caption{Diagrama de classe MotorProxy (Autor, 2022).}
-        \end{figure}
-\end{frame}
-
-\begin{frame}{Modelagem do método accessMotorDirection - Parte I lógica}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.45\linewidth]{Figs/accessMotorDirection.png}
-            \caption{Diagrama de atividade accessMotorDirection (Autor, 2022).}
-        \end{figure}
-\end{frame}
-
-\begin{frame}{Lógica para geração de código}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.8\linewidth]{Figs/alg.png}
-            \caption{Pseudocódigo para nó de decisão (Autor, 2022).}
-        \end{figure}
-\end{frame}
-
-\begin{frame}{Modelagem do método accessMotorDirection - Parte II lógica}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.45\linewidth]{Figs/accessMotorDirection.png}
-            \caption{Diagrama de atividade accessMotorDirection (Autor, 2022).}
-        \end{figure}
-\end{frame}
-
-
-%------------------------------------------------------------------------------
-
-\section{Resultados}
-\begin{frame}{DecisionNode e a relação com OpaqueBehavior}
-
-\begin{figure}[htbp]
-\centering
-\subfigure[\centering Diagrama de atividade]{
-\includegraphics[width=.4\textwidth]{Figs/accessMotorDirection.png}
-} % end subfigure
-\quad % dá um espaço entre as duas figuras.
-\subfigure[\centering Código gerado]{
-\includegraphics[width=.5\textwidth]{Figs/codCodaccessMotorDirection.png}
-} % end subfigure
-\caption{Exemplo 1 de código gerado accessMotorDirection (Autor, 2022).}
-\end{figure}
+\end{itemize}
 
 \end{frame}
 
-\begin{frame}{CreateObjectAction e CallOperationAction}
-
-\begin{figure}[htbp]
-\centering
-\subfigure[\centering Diagrama de atividade]{
-\includegraphics[width=.25\textwidth]{Figs/writeMotorSpeed.png}
-} % end subfigure
-\quad % dá um espaço entre as duas figuras.
-\subfigure[\centering Código gerado]{
-\includegraphics[width=.4\textwidth]{Figs/codwriteMotorSpeed.png}
-} % end subfigure
-\caption{Exemplo 2 de código gerado writeMotorSpeed (Autor, 2022).}
-\end{figure}
-
+\begin{frame}{Diferença entre AID e CART}
+\begin{itemize}
+    \item \textbf{ AID (Detecção Automática de Interação):}
+    \begin{itemize}
+        \item Um programa precursor na estrutura de árvore para regressão.
+        \item Foco na construção de uma "árvore honesta" através de um processo específico de poda e estimativa.
+    \end{itemize}
+     \vspace{1em} % Espaço vertical de uma linha entre os itens principais
+    \item  \textbf{CART (Árvores de Classificação e Regressão):}
+    \begin{itemize}
+        \item Uma abordagem mais avançada que se baseia no AID.
+        \item Compartilha algumas funcionalidades com o AID, como combinações de variáveis e tratamento de dados ausentes, mas também oferece recursos adicionais:
+        \begin{itemize}
+            \item Sem restrições no número de valores de variáveis (diferente do AID).
+            \item Subamostragem para melhor generalização.
+            \item Critérios de divisão diferentes dos usados no AID.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
-\begin{frame}{ReadStructuralFeatureAction e AddStructuralFeatureValueAction}
+%-----------------------------------------------------------------------------
 
-\begin{figure}[htbp]
-\centering
-\subfigure[\centering Diagrama de atividade]{
-\includegraphics[width=.45\textwidth]{Figs/clearErrorStatus.png}
-} % end subfigure
-\quad % dá um espaço entre as duas figuras.
-\subfigure[\centering Código gerado]{
-\includegraphics[width=.45\textwidth]{Figs/codclearErrorStatus.png}
-} % end subfigure
-\caption{Exemplo 3 de código gerado clearErrorStatus (Autor, 2022).}
-\end{figure}
+\section{Construção da Árvore}
 
+\begin{frame}{Construção dos Ramos}
+\begin{itemize}
+    \item \textbf{Processo de construção envolve}:
+    \begin{itemize}
+        \item \textit{Definição e Coleta de Dados:} Identificar o problema, coletar e preparar dados.
+        \item \textit{Seleção do Algoritmo de Divisão:} Escolher critérios (Gini, entropia) e estratégia de divisão (binária, multivariada).
+        \item \textit{Crescimento da Árvore:} Aplicar critérios de divisão, criar ramos e repetir até atingir critérios de parada.
+        \item \textit{Poda da Árvore:} Podar para evitar sobreajuste, utilizando técnicas pré e pós-pruna.
+        \item \textit{Avaliação e Seleção do Modelo:} Usar validação cruzada para testar desempenho e selecionar o melhor modelo.
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplo diagrama de classe - Limitação}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.52\linewidth]{Figs/buttonClass.png}
-            \caption{Classe de padrão Debouncing (Samek, 2008).}
-        \end{figure}
+%-----------------------------------------------------------------------------
+
+\begin{frame}{Critério de Divisão}
+\begin{itemize}
+    \item \textbf{Critérios e Considerações}
+    \begin{itemize}
+        \item \textit{Critérios:}
+        \begin{itemize}
+            \item \textbf{MSE (Erro Quadrático Médio)}: Precisão de previsão em regressão.
+            \item \textbf{Ganho de Informação}: Discriminação em classificação baseada em entropia ou Gini.
+            \item \textbf{Entropia e Índice de Gini}: Medem a pureza; baixos valores indicam alta pureza.
+        \end{itemize}
+        \vspace{1em} % Espaço vertical de uma linha entre os itens principais
+        \item \textit{Fatores a Considerar:}
+        \begin{itemize}
+            \item \textbf{Tipo de Problema}: Gini e entropia para classificação; MSE para regressão.
+            \item \textbf{Características dos Dados}: Distribuição de classes e presença de outliers.
+            \item \textbf{Complexidade do Modelo}: Ganho de informação aumenta complexidade; MSE simplifica.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Modelagem no eclipse papyrus modeling - Limitação}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.8\linewidth]{Figs/classDiagramButton.png}
-            \caption{Diagrama de classe Timer (Autor, 2022).}
-        \end{figure}
+%-----------------------------------------------------------------------------
+
+% Slide sobre MSE
+\begin{frame}{Métricas de Avaliação}
+\begin{itemize}
+    \item \textbf{MSE (Erro Quadrático Médio)}
+    \begin{itemize}
+        \item \textbf{Objetivo}: Avaliar a qualidade de modelos de regressão penalizando grandes erros de previsão.
+        \item \textbf{Funcionamento}: Calcula a média dos quadrados das diferenças entre os valores reais e previstos.
+        \item \textbf{Vantagens}:
+        \begin{itemize}
+            \item Penaliza severamente grandes erros.
+            \item Utilizável em técnicas de otimização como gradiente descendente.
+        \end{itemize}
+        \item \textbf{Desvantagens}:
+        \begin{itemize}
+            \item Alta sensibilidade a outliers.
+            \item Difícil interpretação direta.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Modelagem diagrama de atividade delay - Limitação}
-    \begin{figure}
-            \centering
-             \includegraphics[width=0.45\linewidth]{Figs/delay.png}
-            \caption{Diagrama de atividade delay da classe Timer (Autor, 2022).}
-        \end{figure}
+% Fórmula do MSE com descrições detalhadas
+\begin{frame}{Fórmula do MSE}
+\begin{equation}
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+\end{equation}
+onde:
+\begin{itemize}
+    \item \( n \) é o número total de observações.
+    \item \( y_i \) é o valor real da \( i \)-ésima observação.
+    \item \( \hat{y}_i \) é o valor previsto para a \( i \)-ésima observação.
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Comparação do código da literatura com código gerado}
-
-\begin{figure}[htbp]
-\centering
-\subfigure[\centering Código da literatura (Samek, 2008).]{
-\includegraphics[width=.45\textwidth]{Figs/timingCode.png}
-} % end subfigure
-\quad % dá um espaço entre as duas figuras.
-\subfigure[\centering Código gerado (Autor, 2022).]{
-\includegraphics[width=.45\textwidth]{Figs/meuTimer.png}
-} % end subfigure
-\caption{Exemplo 4 de código gerado método delay.}
-\end{figure}
-
+% Exemplo Prático do MSE
+\begin{frame}{Exemplo Prático do MSE}
+\begin{itemize}
+    \item Valores Reais: [6.575, 6.421, 7.185, 6.998, 7.147]
+    \item Valores Previstos: [6.1, 6.0, 7.2, 6.5, 6.3]
+    \item Diferenças Quadráticas:
+    \begin{itemize}
+        \item (6.575 - 6.1)\(^2\) = 0.225625
+        \item (6.421 - 6.0)\(^2\) = 0.177241
+        \item (7.185 - 7.2)\(^2\) = 0.000225
+        \item (6.998 - 6.5)\(^2\) = 0.248004
+        \item (7.147 - 6.3)\(^2\) = 0.717409
+    \end{itemize}
+    \item Soma das Diferenças Quadráticas: 1.368504
+    \item MSE = 1.368504 / 5 = 0.273701
+\end{itemize}
 \end{frame}
 
-%------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+
+% Slide sobre MAE
+\begin{frame}{Métricas de Avaliação}
+\begin{itemize}
+    \item \textbf{MAE (Erro Absoluto Médio)}
+    \begin{itemize}
+        \item \textbf{Objetivo}: Avaliar a qualidade de modelos de regressão, medindo o erro médio em termos absolutos.
+        \item \textbf{Funcionamento}: Calcula a média dos valores absolutos das diferenças entre os valores reais e previstos.
+        \item \textbf{Vantagens}:
+        \begin{itemize}
+            \item Menos sensível a outliers, oferecendo uma visão mais robusta do desempenho.
+            \item Fácil interpretação em termos dos valores originais dos dados.
+        \end{itemize}
+        \item \textbf{Desvantagens}:
+        \begin{itemize}
+            \item Não penaliza severamente grandes erros, o que pode levar a ajustes menos precisos em alguns casos.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+% Fórmula do MAE com descrições detalhadas
+\begin{frame}{Fórmula do MAE}
+\begin{equation}
+\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+\end{equation}
+onde:
+\begin{itemize}
+    \item \( n \) é o número total de observações.
+    \item \( y_i \) é o valor real da \( i \)-ésima observação.
+    \item \( \hat{y}_i \) é o valor previsto para a \( i \)-ésima observação.
+\end{itemize}
+\end{frame}
+
+% Exemplo Prático do MAE
+\begin{frame}{Exemplo Prático do MAE}
+\begin{itemize}
+    \item Valores Reais: [6.575, 6.421, 7.185, 6.998, 7.147]
+    \item Valores Previstos: [6.1, 6.0, 7.2, 6.5, 6.3]
+    \item Diferenças Absolutas:
+    \begin{itemize}
+        \item |6.575 - 6.1| = 0.475
+        \item |6.421 - 6.0| = 0.421
+        \item |7.185 - 7.2| = 0.015
+        \item |6.998 - 6.5| = 0.498
+        \item |7.147 - 6.3| = 0.847
+    \end{itemize}
+    \item Soma das Diferenças Absolutas: 2.256
+    \item MAE = 2.256 / 5 = 0.4512
+\end{itemize}
+\end{frame}
+
+
+%-----------------------------------------------------------------------------
+
+\begin{frame}{Métodos de Podagem}
+\begin{itemize}
+    \item \textbf{O que é Poda?}
+    \begin{itemize}
+        \item Processo de remover ramos desnecessários para simplificar a árvore e melhorar a generalização do modelo.
+    \end{itemize}
+
+    \item \textbf{Tipos de Poda:}
+    \begin{itemize}
+        \item \textbf{Pré-Poda:} Evita ramos excessivos durante a construção, definindo critérios como profundidade máxima, número mínimo de amostras e valor mínimo de impureza.
+        \item \textbf{Pós-Poda:} Remove ramos após a construção da árvore, utilizando validação cruzada e critérios de custo-complexidade.
+    \end{itemize}
+
+    \item \textbf{Métodos Populares de Pós-Poda:}
+    \begin{itemize}
+        \item Redução de Erro e Poda Pessimista: Removem ramos que aumentam o erro de validação.
+        \item Poda Baseada em Custo-Complexidade: Elimina ramos que elevam a complexidade sem aumentar a precisão.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------------
+
+\section{Avaliação da Árvore de Regressão}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+%-----------------------------------------------------------------------------
+
+\section{Demonstração Prática}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+\begin{frame}{Texto Aqui}
+\end{frame}
+
+%-----------------------------------------------------------------------------
 
 \section{Conclusões}
 
 \begin{frame}{Conclusões}
-    \begin{outline}
-        \1 Após estudar a literatura de transformação de modelos para texto;
-        \1 Selecionar a abordagem para geração de código embarcado através de diagrama comportamental de atividade UML; 
-        \1 Realizar a implementação do gerador e obter fragmentos de código.
-    \end{outline}
 \end{frame}
 
 \begin{frame}{Conclusões}
-    \begin{outline}
-        \1 A ferramenta consegue identificar e realizar a geração de código para os nós:
-        \2 InitialNode;
-        \2 DecisionNode;
-        \2 MergeNode;
-        \2 ActivityFinalNode.
-
-        \1 Além das ações:
-        \2 ReadStructuralFeatureAction;
-        \2 AddStructuralFeatureValueAction;
-        \2 ActivityParameterNode;
-        \2 ClearStructuralFeatureAction;
-        \2 CreateObjectAction;
-        \2 DestroyObjectAction;
-        \2 CallOperationAction.
-    \end{outline}
 \end{frame}
 
 \begin{frame}{Conclusões}
-    \begin{outline}
-        \1 Conseguindo gerar fragmentos de código em C++ para:
-        \2 Criar objetos;
-        \2 Destruir objetos;
-        \2 Atribuir valor aos objetos;
-        \2 Retornar o valor dos objetos;
-        \2 Estrutura If/Else;
-        \2 Realizar a chamada de funções para os objetos.
-    \end{outline}
 \end{frame}
 
-\begin{frame}{Conclusões}
-    \begin{outline}
-        \1 Tendo como limitações:
-        \2 Tarefas paralelas (ForkNode e JoinNode);
-        \2 Laço de repetição While e For (LoopNode ou DecisionNode);
-        \2 OpaqueBehavior na condição do If;
-        \2 Indentação.
-    \end{outline}
-\end{frame}
-
-\begin{frame}{Conclusões}
-
-    \begin{outline}
-        \1 Trabalhos futuros:
-        \2 Aumentar a quantidade de nós e ações comportamentais suportados (laços de repetição e tarefas em paralelo);
-        \2 Controle do objeto enviado no fluxo de objetos;
-        \2 Melhorar indentação.
-    \end{outline}
-\end{frame}
-
-
-%------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
 
 \section{Referências}
 \begin{frame}[t]{Referências}
     \begin{itemize}
-        \item SAMEK, M. Practical UML Statecharts in C/C++: Event-Driven Programming for Embedded Systems. CRC Press, 2008. ISBN 9781482249262.
-        \item KLEPPE, A.; WARMER, J.; BAST, W. MDA explained, the model driven architecture: practice and promise. 5. ed. Massachusetts: Pearson, 2005.
+        \item BREIMAN, L.; FRIEDMAN, J.; STONE, C.J.; OLSHEN, R.A. Classification and Regression Trees. Taylor \& Francis, 1984. ISBN 9780412048418.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Fechamento}
+\begin{frame}
     \centering
-    Geração de Código Usando Diagramas de Atividade para Sistemas Embarcados
+   Árvores de Regressão: Processo de Treinamento
    \par\noindent\rule{\textwidth}{0.5pt}
     Jean Marcelo Mira Junior\\
-    Orientador: Prof. Dr. Gian Ricardo Berkenbrock
+    Ramiro Luiz Nunes
 
 \end{frame}
 
 \end{document}
 
-%-----------------------------------------------Este comentario nunca aparecera
+%-----------------------------------------------------------------------------

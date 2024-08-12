@@ -1,8 +1,7 @@
 \babel@toc {brazil}{}\relax 
 \beamer@sectionintoc {2}{Introdução}{3}{0}{1}
-\beamer@sectionintoc {3}{Objetivos}{4}{0}{2}
-\beamer@sectionintoc {4}{Fundamentação teórica}{5}{0}{3}
-\beamer@sectionintoc {5}{Metodologia}{8}{0}{4}
-\beamer@sectionintoc {6}{Resultados}{14}{0}{5}
-\beamer@sectionintoc {7}{Conclusões}{21}{0}{6}
-\beamer@sectionintoc {8}{Referências}{26}{0}{7}
+\beamer@sectionintoc {3}{Construção da Árvore}{6}{0}{2}
+\beamer@sectionintoc {4}{Avaliação da Árvore de Regressão}{15}{0}{3}
+\beamer@sectionintoc {5}{Demonstração Prática}{18}{0}{4}
+\beamer@sectionintoc {6}{Conclusões}{21}{0}{5}
+\beamer@sectionintoc {7}{Referências}{24}{0}{6}

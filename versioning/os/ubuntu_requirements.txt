@@ -1,0 +1,6 @@
+curl
+git
+graphviz
+python3-venv
+texlive-full
+vim
